@@ -32,3 +32,13 @@ body, html {
     animation: blink 1s step-end infinite;
     color: lime; /* A cor do cursor */
 }
+#cursor {
+    color: lime;
+    animation: blink 1s step-end infinite;
+}
+#input:focus + #cursor {
+    animation-play-state: running;
+}
+#input:not(:focus) + #cursor {
+    animation-play-state: paused;
+}

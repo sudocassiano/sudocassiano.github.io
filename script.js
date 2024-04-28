@@ -2,62 +2,92 @@ document.getElementById('input').addEventListener('keydown', function(event) {
     if (event.key === 'Enter') {
         handleCommand(this.value);
         this.value = '';
-    } else if (event.ctrlKey && event.key === 'l') {
-        document.getElementById('output').innerHTML = '';
     }
 });
 
-function handleCommand(command) {
-    const output = document.getElementById('output');
-    const cmd = command.trim().split(' ');
-    switch(cmd[0].toLowerCase()) {
-        case 'get':
-            if (cmd[1] === 'linkedin') {
-                window.open('https://www.linkedin.com/in/yourprofile');
-            } else if (cmd[1] === 'facebook') {
-                window.open('https://www.facebook.com/yourprofile');
-            } else if (cmd[1] === 'twitter') {
-                window.open('https://twitter.com/yourprofile');
-            } else if (cmd[1] === 'youtube') {
-                window.open('https://www.youtube.com/user/yourchannel');
+const commands = {
+    "get": {
+        description: "Fetch social media profiles.",
+        execute: function(args) {
+            const socialLinks = {
+                "linkedin": "https://www.linkedin.com/in/yourprofile",
+                "github": "https://github.com/yourprofile",
+                "bluesky": "https://bluesky.com/yourprofile"
+            };
+            if (socialLinks[args]) {
+                window.open(socialLinks[args]);
             } else {
-                output.innerHTML += `<p>Directory not found: ${cmd[1]}</p>`;
+                displayOutput(`No social media found for ${args}. Try --help get for more info.`);
             }
-            break;
-        case 'get':
-            handleGet(cmd.slice(1).join(' '));
-            break;
-        case 'help':
-            if (cmd[1] === 'get') {
-                output.innerHTML += '<p>Use "get <list>" to open social media links. Available: linkedin, facebook, twitter, youtube.</p>';
+        },
+        help: "Usage: get <social_media>\nAvailable options: linkedin, github, bluesky"
+    },
+    "list domains": {
+        description: "List all custom domains.",
+        execute: function() {
+            const domains = [
+                "brega.cassiano.link",
+                "espinafre.cassiano.link",
+                "kernel.cassiano.link",
+                "mpb.cassiano.link",
+                "nada.cassiano.link",
+                "rocknroll.cassiano.link",
+                "setthefuckup.cassiano.link",
+                "treshorasdamanha.cassiano.link",
+                "work.cassiano.link"
+            ];
+            displayOutput("Available domains:\n- " + domains.join("\n- "));
+        },
+        help: "Usage: list domains"
+    },
+    "open domain": {
+        description: "Open a specified domain.",
+        execute: function(domain) {
+            const domains = [
+                "brega.cassiano.link",
+                "espinafre.cassiano.link",
+                "kernel.cassiano.link",
+                "mpb.cassiano.link",
+                "nada.cassiano.link",
+                "rocknroll.cassiano.link",
+                "setthefuckup.cassiano.link",
+                "treshorasdamanha.cassiano.link",
+                "work.cassiano.link"
+            ];
+            if (domains.includes(domain)) {
+                window.open(`http://${domain}`);
             } else {
-                output.innerHTML += '<p>Available commands:<br>- get [linkedin, facebook, twitter, youtube]<br>- get <list><br>- help [command]</p>';
+                displayOutput(`Domain not found: ${domain}. Try 'list domains' to see all available domains.`);
             }
-            break;
-        default:
-            output.innerHTML += `<p>Command not found: ${command}</p>`;
+        },
+        help: "Usage: open domain <domain>\nExample: open domain brega.cassiano.link"
+    },
+    "--help": {
+        description: "Display help information.",
+        execute: function(command) {
+            if (commands[command]) {
+                displayOutput(commands[command].help);
+            } else {
+                displayOutput("Available commands:\n" + Object.keys(commands).join("\n"));
+            }
+        },
+        help: "Usage: --help [command]"
+    }
+};
+
+function handleCommand(input) {
+    const parts = input.split(' ');
+    const command = parts[0];
+    const args = parts.slice(1).join(' ');
+
+    if (commands[command]) {
+        commands[command].execute(args);
+    } else {
+        displayOutput(`Command not found: ${command}. Try --help for a list of commands.`);
     }
 }
 
-function handleGet(list) {
+function displayOutput(message) {
     const output = document.getElementById('output');
-    const listItems = list.split(',');
-    listItems.forEach(item => {
-        switch(item.trim()) {
-            case 'linkedin':
-                window.open('https://www.linkedin.com/in/yourprofile');
-                break;
-            case 'facebook':
-                window.open('https://www.facebook.com/yourprofile');
-                break;
-            case 'twitter':
-                window.open('https://twitter.com/yourprofile');
-                break;
-            case 'youtube':
-                window.open('https://www.youtube.com/user/yourchannel');
-                break;
-            default:
-                output.innerHTML += `<p>List item not found: ${item}</p>`;
-        }
-    });
+    output.innerHTML += `<p>${message}</p>`;
 }
