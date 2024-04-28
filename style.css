@@ -1,18 +1,18 @@
-body, html {
-    height: 100%;
-    margin: 0;
-    background: black;
-    color: lime;
-    font-family: 'Courier New', monospace;
-}
-#terminal {
-    padding: 20px;
-}
 #input {
-    width: 100%;
+    width: calc(100% - 10px);
     border: none;
     background: none;
     color: inherit;
     font: inherit;
     outline: none;
+    caret-color: lime;
+}
+#terminal span {
+    color: lime;
+}
+@keyframes blink {
+    50% { opacity: 0; }
+}
+#input {
+    animation: blink 1s step-end infinite;
 }
