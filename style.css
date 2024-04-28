@@ -22,11 +22,13 @@ body, html {
     color: inherit;
     font: inherit;
     outline: none;
-    caret-color: lime;
+    caret-color: transparent; /* Remove o cursor padrão */
 }
 @keyframes blink {
     50% { opacity: 0; }
 }
-#input {
+#input::after {
+    content: '|';
     animation: blink 1s step-end infinite;
+    color: lime; /* A cor do cursor */
 }
