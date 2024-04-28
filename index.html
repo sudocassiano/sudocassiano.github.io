@@ -9,7 +9,9 @@
 <body onclick="document.getElementById('input').focus();">
     <div id="terminal">
         <div id="output"></div>
-        <span>$</span><input type="text" id="input" autofocus>
+        <div id="input-line" class="input-line">
+            <span class="prompt">$</span><input type="text" id="input" autofocus>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>

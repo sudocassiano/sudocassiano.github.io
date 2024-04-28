@@ -1,14 +1,28 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    background: black;
+    color: lime;
+    font-family: 'Courier New', monospace;
+}
+#terminal {
+    padding: 20px;
+}
+.input-line {
+    display: flex;
+    align-items: center;
+}
+.prompt {
+    color: lime;
+}
 #input {
-    width: calc(100% - 10px);
+    flex-grow: 1;
     border: none;
     background: none;
     color: inherit;
     font: inherit;
     outline: none;
     caret-color: lime;
-}
-#terminal span {
-    color: lime;
 }
 @keyframes blink {
     50% { opacity: 0; }
