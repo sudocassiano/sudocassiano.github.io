@@ -4,41 +4,34 @@ body, html {
     background: black;
     color: lime;
     font-family: 'Courier New', monospace;
+    font-size: 16px; /* Exemplo de tamanho de fonte */
 }
 #terminal {
     padding: 20px;
+    font-size: 16px;
 }
+
 .input-line {
     display: flex;
-    align-items: center;
+    align-items: rigth;
+    font-family: 'Courier New', monospace;
+    font-size: 16px; /* Mantém o tamanho da fonte consistente */
+    margin: 0; /* Remove margens padrão */
+    padding: 0; /* Remove paddings padrão */
+    white-space: pre; /* Mantém espaçamentos e quebras de linha */
 }
 .prompt {
     color: lime;
 }
 #input {
     flex-grow: 1;
+    font-size: 16px;
     border: none;
     background: none;
     color: inherit;
     font: inherit;
     outline: none;
-    caret-color: transparent; /* Remove o cursor padrão */
 }
 @keyframes blink {
     50% { opacity: 0; }
-}
-#input::after {
-    content: '|';
-    animation: blink 1s step-end infinite;
-    color: lime; /* A cor do cursor */
-}
-#cursor {
-    color: lime;
-    animation: blink 1s step-end infinite;
-}
-#input:focus + #cursor {
-    animation-play-state: running;
-}
-#input:not(:focus) + #cursor {
-    animation-play-state: paused;
 }
