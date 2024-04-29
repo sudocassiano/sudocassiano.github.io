@@ -1,110 +1,125 @@
 document.getElementById('input').addEventListener('keydown', function(event) {
     if (event.ctrlKey && event.key === 'c') {
-        displayOutput(`$ ${this.value} (cancelled)`);  // Mostra o comando como cancelado
-        this.value = ''; // Limpa o campo de entrada
-        event.preventDefault(); // Impede o comportamento padrão
+        displayOutput(`$ ${this.value} (cancelled)`);  
+        this.value = ''; 
+        event.preventDefault(); 
     } else if (event.ctrlKey && event.key === 'l') {
-        document.getElementById('output').innerHTML = ''; // Limpa o terminal
-        event.preventDefault(); // Impede o comportamento padrão
+        document.getElementById('output').innerHTML = ''; 
+        event.preventDefault(); 
     } else if (event.key === 'Enter') {
-        displayOutput(`$ ${this.value}`); // Exibe o comando na saída antes de executar
-        handleCommand(this.value); // Manipula o comando
-        commandHistory.push(this.value); // Armazena no histórico
-        historyIndex = commandHistory.length; // Atualiza o índice
-        this.value = ''; // Limpa o campo de entrada
-        event.preventDefault(); // Impede o envio do formulário
+        displayOutput(`$ ${this.value}`); 
+        handleCommand(this.value); 
+        commandHistory.push(this.value); 
+        historyIndex = commandHistory.length; 
+        this.value = ''; 
+        event.preventDefault(); 
     } else if (event.key === 'ArrowUp') {
         if (historyIndex > 0) {
-            historyIndex--; // Navega pelo histórico
-            this.value = commandHistory[historyIndex]; // Exibe o comando anterior
-            event.preventDefault(); // Impede o cursor de se mover
+            historyIndex--; 
+            this.value = commandHistory[historyIndex]; 
+            event.preventDefault(); 
         }
     } else if (event.key === 'ArrowDown') {
         if (historyIndex < commandHistory.length - 1) {
-            historyIndex++; // Navega pelo histórico
-            this.value = commandHistory[historyIndex]; // Exibe o comando seguinte
+            historyIndex++; 
+            this.value = commandHistory[historyIndex]; 
         } else if (historyIndex === commandHistory.length - 1) {
             historyIndex++;
-            this.value = ''; // Limpa o campo se estiver no fim do histórico
+            this.value = ''; 
         }
     }
 });
 
-const commandHistory = []; // Armazena o histórico de comandos
-let historyIndex = 0; // Índice atual no histórico
+const commandHistory = []; 
+let historyIndex = 0; 
 
-// Aqui permanecem suas definições de comandos como antes
 const commands = {
     "get": {
         description: "Fetch social media profiles.",
         execute: function(args) {
-            const socialLinks = {
-                "linkedin": "https://www.linkedin.com/in/cassianoamarinho",
-                "github": "https://github.com/sudocassiano",
-            };
-            if (socialLinks[args]) {
-                window.open(socialLinks[args]);
+            if (args === '--help' || args === '-h') {
+                displayOutput(commands['get'].help);
             } else {
-                displayOutput(`No social media found for ${args}. Try 'help <command>' to get for more info.`);
+                const socialLinks = {
+                    "linkedin": "https://www.linkedin.com/in/cassianoamarinho",
+                    "github": "https://github.com/sudocassiano",
+                };
+                if (socialLinks[args]) {
+                    window.open(socialLinks[args]);
+                } else {
+                    displayOutput(`No social media found for ${args}. Try include -h to get for more info.`);
+                }
             }
         },
-        help: "Usage: get <social_media>\nAvailable options: linkedin, github"
+        help: "Usage: get [options] <br> Available options: [linkedin, github]"
     },
     "domains": {
         description: "List all custom domains.",
-        execute: function() {
-            const domains = [
-                "brega.cassiano.link",
-                "espinafre.cassiano.link",
-                "kernel.cassiano.link",
-                "mpb.cassiano.link",
-                "nada.cassiano.link",
-                "rocknroll.cassiano.link",
-                "setthefuckup.cassiano.link",
-                "treshorasdamanha.cassiano.link",
-                "work.cassiano.link"
-            ];
-            displayOutput("Available domains:\n- " + domains.join("\n- "));
+        execute: function(args) {
+            if (args === '--help' || args === '-h') {
+                displayOutput(commands['domains'].help);
+            } else {
+                const domains = [
+                    "brega.cassiano.link",
+                    "espinafre.cassiano.link",
+                    "kernel.cassiano.link",
+                    "mpb.cassiano.link",
+                    "nada.cassiano.link",
+                    "rocknroll.cassiano.link",
+                    "setthefuckup.cassiano.link",
+                    "treshorasdamanha.cassiano.link",
+                    "work.cassiano.link"
+                ];
+                displayOutput("Available domains:<br>- " + domains.join("<br>- "));
+            }
         },
         help: "Usage: domains"
     },
     "open": {
         description: "Open a specified domain.",
-        execute: function(domain) {
-            const domains = [
-                "brega.cassiano.link",
-                "espinafre.cassiano.link",
-                "kernel.cassiano.link",
-                "mpb.cassiano.link",
-                "nada.cassiano.link",
-                "rocknroll.cassiano.link",
-                "setthefuckup.cassiano.link",
-                "treshorasdamanha.cassiano.link",
-                "work.cassiano.link"
-            ];
-            if (domains.includes(domain)) {
-                window.open(`http://${domain}`);
+        execute: function(args) {
+            if (args === '--help' || args === '-h') {
+                displayOutput(commands['open'].help);
             } else {
-                displayOutput(`Domain not found: ${domain}. Try 'domains' to see all available domains.`);
+                const argss = [
+                    "brega.cassiano.link",
+                    "espinafre.cassiano.link",
+                    "kernel.cassiano.link",
+                    "mpb.cassiano.link",
+                    "nada.cassiano.link",
+                    "rocknroll.cassiano.link",
+                    "setthefuckup.cassiano.link",
+                    "treshorasdamanha.cassiano.link",
+                    "work.cassiano.link"
+                ];
+                if (argss.includes(args)) {
+                    window.open(`http://${args}`);
+                } else {
+                    displayOutput(`Domain not found: ${args}. Try 'domains' to see all available domains.`);
+                }
             }
         },
-        help: "Usage: open <domain>\nExample: open brega.cassiano.link"
+        help: "Usage: open [domain] <br> Example: open brega.cassiano.link"
     },
-    "help": {
-        description: "Display help information.",
-        execute: function(command) {
-            if (commands[command]) {
-                displayOutput(commands[command].help);
+    "commands": {
+        description: "Display all comands avaliable.",
+        execute: function(args) {
+            if (args === '--help' || args === '-h') {
+                displayOutput(commands['commands'].help);
             } else {
-                displayOutput("Available commands:\n" + Object.keys(commands).join("\n"));
+                displayOutput("Available commands:<br> - " + Object.keys(commands).join("<br> - "));
             }
         },
-        help: "Usage: help [command]"
+        help: "Usage: commands"
     },
     "pudim": {
-        description: "Redirect to the Pudim website.",
-        execute: function() {
-            window.open("https://www.pudim.com.br/");
+        description: "Open the best website.",
+        execute: function(args) {
+            if (args === '--help' || args === '-h') {
+                displayOutput(commands['pudim'].help);
+            } else {
+                window.open("https://www.pudim.com.br/");
+            }
         },
         help: "Usage: pudim"
     }
@@ -118,12 +133,12 @@ function handleCommand(input) {
     if (commands[command]) {
         commands[command].execute(args);
     } else {
-        displayOutput(`Command not found: ${command}. Try help for a list of commands.`);
+        displayOutput(`Command not found: ${command}. Try 'commands' for a list of commands.`);
     }
 }
 
 function displayOutput(message) {
     const output = document.getElementById('output');
-    output.innerHTML += `<p>${message}</p>`; // Adiciona a mensagem ao terminal
-    document.getElementById('input').focus(); // Mantém o foco no campo de entrada
+    output.innerHTML += `<p>${message}</p>`; 
+    document.getElementById('input').focus(); 
 }

@@ -35,3 +35,13 @@ body, html {
 @keyframes blink {
     50% { opacity: 0; }
 }
+
+#ascii-art {
+    font-size: 12px; /* Ajuste o tamanho conforme necessário */
+    line-height: 1; /* Mantém as linhas da arte ASCII próximas umas das outras */
+    white-space: pre; /* Respeita espaços e quebras de linha da arte ASCII */
+}
+
+p {
+    margin: 10px 0; /* Espaçamento entre parágrafos */
+}
